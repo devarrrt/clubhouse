@@ -1,8 +1,7 @@
 import React from 'react'
 
-interface Props {}
 
-const test = (props: Props) => {
+const test = () => {
   return (
     <div>
       test page
