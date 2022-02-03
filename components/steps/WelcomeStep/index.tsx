@@ -1,9 +1,11 @@
+import { useContext } from "react"
 import WhiteBlock from "../../WhiteBlock"
 import Button from '../../Button'
-
 import styles from './WelcomeStep.module.scss'
 
 const WeclomeStep: React.FC = () => {
+    // const { onNestStep } = useContext(null)
+
     return (
         <WhiteBlock className={styles.block}>
             <h3 className={styles.title}>
@@ -20,6 +22,7 @@ const WeclomeStep: React.FC = () => {
                     <img className="d-ib ml-10" src="/static/arrow.svg" />
                 </Button>
             </div>
+
             <div className="link mt-15 cup d-ib">Have an invite text? Sign in</div>
         </WhiteBlock>
     )
