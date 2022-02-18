@@ -10,7 +10,7 @@ const colors = {
 
 interface IButton {
     color?: any
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
     className?: string
     disabled?: boolean;
 }
