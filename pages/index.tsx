@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import WeclomeStep from "../components/steps/WelcomeStep";
 import NameStep from './../components/steps/NameStep/index';
 import GitHubStep from './../components/steps/GitHubStep/index';
@@ -15,14 +15,25 @@ const StepsState = {
   5: EnterCodeStep
 }
 
+interface IMainContext {
+  onNextStep: () => void;
+  step: number
+}
+
+export const MainContext = createContext<IMainContext>({} as IMainContext)
+
 export default function Home() {
-  const [step, setStep] = useState<number>(5)
+  const [step, setStep] = useState<number>(0)
   const Step = StepsState[step]
   
+  const onNextStep = () => {
+    setStep(prev => prev + 1)
+  }
+
   return (
-    <div>
-      <Step/>
-    </div>
+    <MainContext.Provider value={{ step, onNextStep }}>
+      <Step />
+    </MainContext.Provider>
   );
 }
 

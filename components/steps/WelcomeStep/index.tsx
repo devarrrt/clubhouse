@@ -2,9 +2,10 @@ import { useContext } from "react"
 import WhiteBlock from "../../WhiteBlock"
 import Button from '../../Button'
 import styles from './WelcomeStep.module.scss'
+import { MainContext } from './../../../pages/index';
 
 const WeclomeStep: React.FC = () => {
-    // const { onNestStep } = useContext(null)
+    const { onNextStep } = useContext(MainContext)
 
     return (
         <WhiteBlock className={styles.block}>
@@ -17,7 +18,7 @@ const WeclomeStep: React.FC = () => {
                 youches, we're adding people gradually to make sure nothing breaks :)
             </p>
             <div>
-                <Button onClick={() => console.log('next page')}>
+                <Button onClick={onNextStep}>
                     Get your username
                     <img className="d-ib ml-10" src="/static/arrow.svg" />
                 </Button>

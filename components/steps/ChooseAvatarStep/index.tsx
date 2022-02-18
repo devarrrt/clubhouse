@@ -4,12 +4,15 @@ import StepInfo from '../../StepInfo'
 import WhiteBlock from './../../WhiteBlock/index';
 import Avatar from './../../Avatar/index';
 import Button from './../../Button/index';
+import { MainContext } from '../../../pages';
 
 import styles from './ChooseAvatarStep.module.scss'
+import { useContext } from 'react';
 
 const ChooseAvatarStep = () => {
     const [avatarUrl, setavatarUrl] = useState<string>('')
     const inputFileRef = React.useRef<HTMLInputElement>(null);
+    const { onNextStep } = useContext(MainContext)
 
     const handleChangeImage = (e: Event): void => {
         const file = (e.target as HTMLInputElement).files [0]
@@ -42,7 +45,7 @@ const ChooseAvatarStep = () => {
                     </label>
                 </div>
                 <input id="image" ref={inputFileRef} type="file" hidden />
-                <Button onClick={() => { }}>
+                <Button onClick={onNextStep}>
                     Next
                     <img className="d-ib ml-10" src="/static/arrow.svg" />
                 </Button>

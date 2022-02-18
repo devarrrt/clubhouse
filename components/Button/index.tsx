@@ -22,6 +22,7 @@ const Button: React.FC<IButton> = ({ children, disabled,
 }) => {
     return (
         <button type="button"
+            disabled={disabled}
             className={clsx(className, styles.button, colors[color])}
             onClick={onClick}>
             {children}

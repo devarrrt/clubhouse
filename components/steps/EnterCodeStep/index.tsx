@@ -11,7 +11,7 @@ const EnterCodeStep = () => {
     const router = useRouter()
     const [codes, setCodes] = useState(['', '', '', '']);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const disabled = codes.some((v) => v)
+    const disabled = codes.some((v) => !v)
 
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const index = Number(e.target.getAttribute('id'));

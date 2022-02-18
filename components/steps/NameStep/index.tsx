@@ -1,22 +1,25 @@
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import StepInfo from '../../StepInfo'
 import WhiteBlock from '../../WhiteBlock'
 import Avatar from './../../Avatar/index';
 import Button from '../../Button'
 
 import styles from './NameStep.module.scss'
+import { MainContext } from '../../../pages';
 
 interface INameStep {}
 
 const NameStep: React.FC<INameStep> = () => {
     const [inputName, setInputName] = useState<string>()
+    const { onNextStep } = useContext(MainContext)
+    const disabledStep = !inputName
 
     const onClickNext = () => {
-
+        if (inputName) {
+            onNextStep()
+        }
     }
-
-    const disabledStep = !inputName
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputName(e.target.value)
