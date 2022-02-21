@@ -21,13 +21,18 @@ const Avatar: React.FC<IAvatar> = ({
     letters,
 }) => {
     return (
-        <div style={{ width, height, backgroundImage: src ? `url(${src})` : '' }}
-        className={clsx(styles.avatar, isVoice ? styles.avatarBorder : '', className, 'd-ib', {
-        [styles.emptyAvatar]: !src,
-        })}>  
-        { !src ? letters : null }
+        <div
+            style={{ width, height, backgroundImage: src ? `url(${src})` : '' }}
+            className={clsx(styles.avatar, isVoice ? styles.avatarBorder : '', className, 'd-ib', {
+                [styles.emptyAvatar]: !src,
+            })}>
+            {!src ? letters : null}
         </div>
-    )
+    );
+
 }
 
 export default Avatar
+
+
+

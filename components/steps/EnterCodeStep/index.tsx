@@ -29,7 +29,6 @@ const EnterCodeStep = () => {
     const onSubmit = async () => {
         try {
             setIsLoading(true)
-            await Axios.get('/todos')
             router.push('/rooms')
             setIsLoading(false)
         } catch (err) {

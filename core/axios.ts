@@ -1,8 +1,8 @@
-import axios from 'axios'
+import Axios from 'axios'
 
-const Axios = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com/',
+const instance = Axios.create({
+    baseURL: "http://localhost:3000/",
     withCredentials: true
 })
 
-export default Axios
+export default instance
