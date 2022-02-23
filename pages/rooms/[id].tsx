@@ -9,9 +9,7 @@ type IRoomPage = {
 
 }
 
-
-function RoomPage ({room})  {
-    console.log(room,'room')
+function RoomPage({ room }) {
 
     return (
         <>
@@ -25,25 +23,25 @@ function RoomPage ({room})  {
 }
 export default RoomPage
 
-export const getServerSideProps = async(context) => {
-try {
-    const { data } = await Axios.get('/rooms.json')
-    const roomId = context.query.id
-    const room = data.find(el => el.id === roomId)
-    return {
-        props: {
-            room
+export const getServerSideProps = async (context) => {
+    try {
+        const { data } = await Axios.get('/rooms.json')
+        const roomId = context.query.id
+        const room = data.find(el => el.id === roomId)
+        return {
+            props: {
+                room
+            }
+        }
+    } catch (e) {
+        console.log(e)
+
+        return {
+            props: {
+                rooms: []
+            }
         }
     }
-} catch(e) {
-    console.log(e)
-
-   return {
-       props: {
-           rooms: []
-       }
-   }
-}
 }
 
 
