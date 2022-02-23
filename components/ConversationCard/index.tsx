@@ -34,7 +34,7 @@ const ConversationCard: React.FC<IConversationCard> = ({ title, guests, avatars,
                             key={i}
                             width='55'
                             height='55'
-                            className={i === avatars.length - 1 ? 'lastAvatar' : ""} />
+                            className={ avatars.length > 1 && i === avatars.length - 1 ? 'lastAvatar' : ""} />
                     ))}
                 </div>
                 <div className={clsx(styles.info, 'ml-10')}>
