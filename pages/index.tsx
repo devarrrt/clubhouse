@@ -8,8 +8,8 @@ import EnterCodeStep from '../components/steps/EnterCodeStep';
 
 const StepsState = {
   0: WeclomeStep,
-  1: NameStep,
-  2: GitHubStep,
+  1: GitHubStep,
+  2: NameStep,
   3: ChooseAvatarStep,
   4: EnterPhoneStep,
   5: EnterCodeStep

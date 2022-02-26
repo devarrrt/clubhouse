@@ -25,7 +25,7 @@
     "**/*.ts",
     "**/*.tsx",
     "server/types.d.ts"
-  ],
+, "server/core/db.ts"  ],
   "exclude": [
     "node_modules"
   ]
