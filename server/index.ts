@@ -8,21 +8,26 @@ dotenv.config({
 import './core/db'
 
 import {passport} from './core/passport'
+import multer from 'multer'
 
 const app = express()
 
 app.use(passport.initialize())
+
+app.get('/upload', multer.singl())
 
 app.get('/auth/github', passport.authenticate('github'))
 
 app.get('/auth/github/callback', 
 passport.authenticate('github', { failureRedirect: '/login' }),
 (req, res) => {
-    res.json(req.user)
+    res.send(
+        `<script>window.opener.postMessage('${JSON.stringify(req.user,)}','*');window.close();</script>`)
 })
 
 app.listen(3001, () => {
     console.log('server runned');
 })
+
 
    

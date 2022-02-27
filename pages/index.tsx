@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, Dispatch, SetStateAction } from 'react';
 import WeclomeStep from "../components/steps/WelcomeStep";
 import NameStep from './../components/steps/NameStep/index';
 import GitHubStep from './../components/steps/GitHubStep/index';
@@ -17,21 +17,40 @@ const StepsState = {
 
 interface IMainContext {
   onNextStep: () => void;
-  step: number
+  step: number;
+  userData: IUser;
+  setuserData: Dispatch<SetStateAction<IUser>>;
+  changeField: (field: keyof IUser, value: string) => void
+}
+
+interface IUser {
+  fullname: string,
+  avatarUrl: string,
+  phone: string,
+  isActive: boolean,
+  username: string
 }
 
 export const MainContext = createContext<IMainContext>({} as IMainContext)
 
 export default function Home() {
   const [step, setStep] = useState<number>(0)
+  const [userData, setuserData] = useState<IUser>()
   const Step = StepsState[step]
+  
+  const changeField = (field: string, value: string) => {
+    setuserData(prev => ({
+      ...prev,
+      [field]: value
+    }))  
+    } 
   
   const onNextStep = () => {
     setStep(prev => prev + 1)
   }
 
   return (
-    <MainContext.Provider value={{ step, onNextStep }}>
+    <MainContext.Provider value={{ step, onNextStep, userData, setuserData, changeField }}>
       <Step />
     </MainContext.Provider>
   );

@@ -11,8 +11,8 @@ import { MainContext } from '../../../pages';
 interface INameStep {}
 
 const NameStep: React.FC<INameStep> = () => {
-    const [inputName, setInputName] = useState<string>()
-    const { onNextStep } = useContext(MainContext)
+    const { onNextStep, userData, changeField } = useContext(MainContext)
+    const [inputName, setInputName] = useState<string>(userData.fullname)
     const disabledStep = !inputName
 
     const onClickNext = () => {
@@ -22,6 +22,7 @@ const NameStep: React.FC<INameStep> = () => {
     }
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        changeField('fullname', inputName)
         setInputName(e.target.value)
     }
 
@@ -33,7 +34,7 @@ const NameStep: React.FC<INameStep> = () => {
                 description="People use real names on Clubhouse. Thnx:)"
             />
             <WhiteBlock className={clsx("m-auto", styles.WhiteBlock)}>
-                <Avatar src={""} width='120px' height='120px' />
+                <Avatar src={userData.avatarUrl} width='120px' height='120px' />
                 <div className="mb-30 mt-30">
                     <input
                     className="field"

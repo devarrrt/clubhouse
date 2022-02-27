@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import clsx from 'clsx'
 import Button from '../../Button'
 import StepInfo from '../../StepInfo'
@@ -7,13 +7,30 @@ import styles from './GitHubStep.module.scss'
 import { MainContext } from '../../../pages'
 
 const GitHubStep = () => {
-    const { onNextStep } = useContext(MainContext)
+    const { onNextStep, setuserData } = useContext(MainContext)
+
+    const onClickAuth = () => {
+        const win = window.open('http://localhost:3001/auth/github',
+            'Auth',
+            'width=500, height=500, status=yes, toolbar=no, menubar=no, location=no')
+    }
+
+    useEffect(() => {
+        window.addEventListener('message', ({ data, origin }) => {
+            const user: string = data
+            if (typeof user === 'string' &&  user.includes('avatarUrl')) {
+                const json = JSON.parse(user)
+                setuserData(json)
+                onNextStep()
+            }
+        })
+    }, [])
 
     return (
         <div className={styles.block}>
             <StepInfo icon="/static/connect.png" title='Do you import info from GitHub ?' />
             <WhiteBlock className={clsx('m-auto mt-40', styles.whiteBlock)}>
-                <Button onClick={onNextStep} className={clsx(styles.button, 'd-i-flex align-items-center')}>
+                <Button onClick={onClickAuth} className={clsx(styles.button, 'd-i-flex align-items-center')}>
                     <img className='d-ib mr-10' src="/static/github.svg" alt="github" />
                     Import from GitHub
                     <img className='d-ib mr-10' src="/static/arrow.svg" alt="github" />
@@ -25,3 +42,4 @@ const GitHubStep = () => {
 }
 
 export default GitHubStep
+
