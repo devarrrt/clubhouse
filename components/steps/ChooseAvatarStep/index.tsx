@@ -8,19 +8,39 @@ import { MainContext } from '../../../pages';
 
 import styles from './ChooseAvatarStep.module.scss'
 import { useContext } from 'react';
+import Axios from './../../../core/axios';
 
 const ChooseAvatarStep = () => {
-    const [avatarUrl, setavatarUrl] = useState<string>('')
-    const inputFileRef = React.useRef<HTMLInputElement>(null);
-    const { onNextStep } = useContext(MainContext)
+    const [avatarUrl, setAvatarUrl] = useState<string>('')
+    const inputFileRef = React.useRef<HTMLInputElement>(null)
+    const { onNextStep, changeField } = useContext(MainContext)
 
-    const handleChangeImage = (e: Event): void => {
-        const file = (e.target as HTMLInputElement).files [0]
-        if (file) {
-            const ImageUrl = URL.createObjectURL(file)
-            setavatarUrl(ImageUrl)
-        }
-    }
+    const uploadFile = async (file: File):Promise< { url: string } >  => {
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        const { data } = await Axios({
+            method: 'POST',
+            url: '/upload',
+            data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return data;
+    };
+
+        const handleChangeImage = async (event: Event) => {
+            const target = event.target as HTMLInputElement;
+            const file = target.files[0];
+            if (file) {
+                const imageUrl = URL.createObjectURL(file);
+                setAvatarUrl(imageUrl);
+                const data = await uploadFile(file);
+                target.value = '';
+                setAvatarUrl(data.url);
+                changeField('avatarUrl', data.url)
+            }
+        };
+
 
     useEffect(() => {
         if (inputFileRef.current) {

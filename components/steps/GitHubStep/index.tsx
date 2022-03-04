@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import clsx from 'clsx'
+import Cookies from 'js-cookie'
 import Button from '../../Button'
 import StepInfo from '../../StepInfo'
 import WhiteBlock from '../../WhiteBlock'
 import styles from './GitHubStep.module.scss'
-import { MainContext } from '../../../pages'
+import { IUser, MainContext } from '../../../pages'
 
 const GitHubStep = () => {
     const { onNextStep, setuserData } = useContext(MainContext)
@@ -18,10 +19,12 @@ const GitHubStep = () => {
     useEffect(() => {
         window.addEventListener('message', ({ data, origin }) => {
             const user: string = data
-            if (typeof user === 'string' &&  user.includes('avatarUrl')) {
-                const json = JSON.parse(user)
+            if (typeof user === 'string' && user.includes('avatarUrl')) {
+                const json: IUser = JSON.parse(user)
                 setuserData(json)
                 onNextStep()
+
+                Cookies.set('token', json.token)
             }
         })
     }, [])

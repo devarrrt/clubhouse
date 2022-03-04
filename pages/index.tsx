@@ -18,17 +18,19 @@ const StepsState = {
 interface IMainContext {
   onNextStep: () => void;
   step: number;
-  userData: IUser;
+  userData?: IUser;
   setuserData: Dispatch<SetStateAction<IUser>>;
   changeField: (field: keyof IUser, value: string) => void
 }
 
-interface IUser {
+export interface IUser {
+  id: number,
   fullname: string,
   avatarUrl: string,
   phone: string,
-  isActive: boolean,
-  username: string
+  isActive: number,
+  username: string,
+  token?: string
 }
 
 export const MainContext = createContext<IMainContext>({} as IMainContext)
@@ -37,17 +39,19 @@ export default function Home() {
   const [step, setStep] = useState<number>(0)
   const [userData, setuserData] = useState<IUser>()
   const Step = StepsState[step]
-  
+
   const changeField = (field: string, value: string) => {
     setuserData(prev => ({
       ...prev,
       [field]: value
-    }))  
-    } 
-  
+    }))
+  }
+
   const onNextStep = () => {
     setStep(prev => prev + 1)
   }
+
+  console.log(userData, 'userData');
 
   return (
     <MainContext.Provider value={{ step, onNextStep, userData, setuserData, changeField }}>
