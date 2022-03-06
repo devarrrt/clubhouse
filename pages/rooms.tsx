@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Button from '../components/Button'
 import ConversationCard from '../components/ConversationCard'
 import Header from '../components/Header'
@@ -6,9 +6,6 @@ import Link from 'next/link';
 import Axios from '../core/axios';
 
 const RoomsPage = ({rooms = []}) => {
-
-  console.log(rooms, 'rooms');
-  
 
   return (
     <>

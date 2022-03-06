@@ -6,6 +6,7 @@ import WhiteBlock from '../../WhiteBlock'
 import styles from './EnterPhoneStep.module.scss'
 import Button from '../../Button';
 import { MainContext } from '../../../pages';
+import Axios from '../../../core/axios';
 
 interface InputValueState {
     formattedValue: string;
@@ -13,10 +14,25 @@ interface InputValueState {
 };
 
 const EnterPhoneStep = () => {
-    const { onNextStep } = useContext(MainContext)
+    const { onNextStep, changeField } = useContext(MainContext)
     const [phoneValue, setPhoneValue] = useState<InputValueState>({} as InputValueState)
     const disabledStep = !phoneValue.value || !phoneValue.formattedValue
+    const [loading, setLoading] = useState(false)
 
+    const onSubmit = async () => {
+        try {
+            setLoading(true)
+            await Axios.get('/auth/sms')
+            changeField('phone', phoneValue.value)
+            onNextStep()
+        } catch (err) {
+            console.log('Ошибка при отправке номера телефона:', err)
+        } finally {
+            setLoading(false)
+        }
+    } 
+
+    
     return (
         <div className={styles.block}>
             <StepInfo
@@ -36,9 +52,15 @@ const EnterPhoneStep = () => {
                         onValueChange={({ formattedValue, value }) => setPhoneValue({ formattedValue, value })}
                     />
                 </div>
-                <Button disabled={disabledStep} onClick={onNextStep}>
-                    Next
-                    <img className="d-ib ml-10" src="/static/arrow.svg" />
+                <Button disabled={loading || disabledStep} onClick={onSubmit}>
+                    {loading ? (
+                        "Sending..."
+                    ) : (
+                        <>
+                                Next
+                            <img className="d-ib ml-10" src="/static/arrow.svg" />
+                        </>
+                    )}
                 </Button>
                 <p className={clsx(styles.policyText, 'mt-30')}>
                     By entering your number, you’re agreeing to our Terms of Service and Privacy Policy.

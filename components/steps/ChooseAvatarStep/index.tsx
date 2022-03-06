@@ -11,11 +11,12 @@ import { useContext } from 'react';
 import Axios from './../../../core/axios';
 
 const ChooseAvatarStep = () => {
-    const [avatarUrl, setAvatarUrl] = useState<string>('')
+    const { onNextStep, changeField, userData } = useContext(MainContext)
     const inputFileRef = React.useRef<HTMLInputElement>(null)
-    const { onNextStep, changeField } = useContext(MainContext)
+    const [avatarUrl, setAvatarUrl] = useState<string>(userData?.avatarUrl)
+    const avatarLetters = userData?.fullname.split(' ').map(s => s[0]).join('')
 
-    const uploadFile = async (file: File):Promise< { url: string } >  => {
+    const uploadFile = async (file: File): Promise<{ url: string }> => {
         const formData = new FormData();
         formData.append('photo', file);
 
@@ -28,19 +29,18 @@ const ChooseAvatarStep = () => {
         return data;
     };
 
-        const handleChangeImage = async (event: Event) => {
-            const target = event.target as HTMLInputElement;
-            const file = target.files[0];
-            if (file) {
-                const imageUrl = URL.createObjectURL(file);
-                setAvatarUrl(imageUrl);
-                const data = await uploadFile(file);
-                target.value = '';
-                setAvatarUrl(data.url);
-                changeField('avatarUrl', data.url)
-            }
-        };
-
+    const handleChangeImage = async (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        const file = target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setAvatarUrl(imageUrl);
+            const data = await uploadFile(file);
+            target.value = '';
+            setAvatarUrl(data.url);
+            changeField('avatarUrl', data.url)
+        }
+    };
 
     useEffect(() => {
         if (inputFileRef.current) {
@@ -57,7 +57,7 @@ const ChooseAvatarStep = () => {
             />
             <WhiteBlock className={clsx('m-auto mt-40', styles.whiteBlock)}>
                 <div className={styles.avatar}>
-                    <Avatar width="120px" height="120px" src={avatarUrl} letters='A' />
+                    <Avatar width="120px" height="120px" src={avatarUrl} letters={avatarLetters ? avatarLetters : "D"} />
                 </div>
                 <div className="mb-30">
                     <label htmlFor="image" className="link cup">

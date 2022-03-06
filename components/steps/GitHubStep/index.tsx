@@ -20,14 +20,14 @@ const GitHubStep = () => {
         window.addEventListener('message', ({ data, origin }) => {
             const user: string = data
             if (typeof user === 'string' && user.includes('avatarUrl')) {
+                Cookies.remove('token')
                 const json: IUser = JSON.parse(user)
                 setuserData(json)
                 onNextStep()
-
                 Cookies.set('token', json.token)
             }
-        })
-    }, [])
+        }) 
+    }, [])   
 
     return (
         <div className={styles.block}>

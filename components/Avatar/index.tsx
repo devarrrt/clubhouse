@@ -20,6 +20,9 @@ const Avatar: React.FC<IAvatar> = ({
     isVoice,
     letters,
 }) => {
+
+    
+
     return (
         <div
             style={{ width, height, backgroundImage: src ? `url(${src})` : '' }}

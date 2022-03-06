@@ -1,4 +1,4 @@
-import { useState, createContext, Dispatch, SetStateAction } from 'react';
+import { useState, createContext, Dispatch, SetStateAction, useEffect } from 'react';
 import WeclomeStep from "../components/steps/WelcomeStep";
 import NameStep from './../components/steps/NameStep/index';
 import GitHubStep from './../components/steps/GitHubStep/index';
@@ -35,8 +35,23 @@ export interface IUser {
 
 export const MainContext = createContext<IMainContext>({} as IMainContext)
 
+const nextStep = (): number => {
+  if (typeof window !== "undefined") {
+    const data = window.localStorage.getItem('userData')
+    if (data) {
+      const json: IUser = JSON.parse(data)
+      if (json.phone) {
+        return 5
+      } else {
+        return 4
+      }
+    }
+  } 
+    return 0
+}
+
 export default function Home() {
-  const [step, setStep] = useState<number>(0)
+  const [step, setStep] = useState<number>(nextStep())
   const [userData, setuserData] = useState<IUser>()
   const Step = StepsState[step]
 
@@ -51,7 +66,9 @@ export default function Home() {
     setStep(prev => prev + 1)
   }
 
-  console.log(userData, 'userData');
+  useEffect(()=> {
+    window.localStorage.setItem('userData', userData && JSON.stringify(userData))
+  }, [userData])
 
   return (
     <MainContext.Provider value={{ step, onNextStep, userData, setuserData, changeField }}>

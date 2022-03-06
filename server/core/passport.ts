@@ -75,5 +75,3 @@ passport.deserializeUser(function (id, done) {
 });
 
 export { passport };
-
-//2.56
