@@ -72,6 +72,35 @@ app.get('/auth/me', passport.authenticate('jwt', { session: false }), async (req
   res.json(req.user)
 });
 
+app.get('/auth/sms/activate', passport.authenticate('jwt', { session: false }), async(req, res)=> {
+  const userId = req.user.id
+  const smsCode = req.query.code
+
+  if (!smsCode) {
+    return res.status(400).send()
+  }
+  const whereQuery = { code: smsCode, user_id: userId }
+
+  try{
+    const findCode = await Code.findOne({
+      where: whereQuery
+    })
+    if (findCode) {
+      await Code.destroy({
+        where: whereQuery
+      })
+    return res.send();
+    } else {
+    throw new Error("Пользователь не найден");
+  }
+} catch(error) {
+  res.status(500).json({
+    message: "Ошибка при активации"
+  })
+}
+} 
+)
+ 
 app.get(
   "/auth/sms",
   passport.authenticate("jwt", { session: false }),
@@ -92,6 +121,7 @@ app.get(
         code: smsCode,
         user_id: userId,
       });
+      res.status(201).send()
     } catch (err) {
       res.status(500).json({
         message: "Ошибка при отправке СМС кода",
