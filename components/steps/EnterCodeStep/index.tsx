@@ -4,8 +4,8 @@ import StepInfo from '../../StepInfo';
 import WhiteBlock from '../../WhiteBlock';
 import styles from './EnterCodeStep.module.scss'
 import Button from '../../Button';
-import Axios from '../../../core/axios';
 import { useRouter } from 'next/router';
+import Axios from '../../../core/axios'
 
 const EnterCodeStep = () => {
     const router = useRouter()
@@ -14,7 +14,7 @@ const EnterCodeStep = () => {
     const disabled = codes.some((v) => !v)
 
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-        const index = Number(e.target.getAttribute('id'));
+        const index = Number(e.target.getAttribute('id'));        
         const value = e.target.value;
         setCodes((prev) => {
             const newArr = [...prev]
@@ -23,12 +23,15 @@ const EnterCodeStep = () => {
         })
         if (e.target.nextSibling) {
             (e.target.nextSibling as HTMLInputElement).focus()
+        } else {
+            onSubmit([ ...codes, value].join('')) 
         }
     }
 
-    const onSubmit = async () => {
+    const onSubmit = async (code) => {
         try {
             setIsLoading(true)
+            await Axios.get(`/auth/sms/activate?code=${code}`)
             router.push('/rooms')
             setIsLoading(false)
         } catch (err) {
@@ -56,10 +59,10 @@ const EnterCodeStep = () => {
                                 />
                             ))}
                         </div>
-                        <Button onClick={onSubmit} disabled={disabled}>
+                        {/* <Button onClick={onSubmit} disabled={disabled}>
                             Next
                             <img className="d-ib ml-10" src="/static/arrow.svg" />
-                        </Button>
+                        </Button> */}
                     </WhiteBlock>
                 </>
             ) : <div className="text-center">

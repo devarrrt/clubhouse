@@ -35,19 +35,24 @@ export interface IUser {
 
 export const MainContext = createContext<IMainContext>({} as IMainContext)
 
+const getUserData = (): IUser | null => {
+  try {
+    return JSON.parse(window.localStorage.getItem('userData'))
+  } catch (error) {
+    return  
+  }
+}
+
 const nextStep = (): number => {
-  if (typeof window !== "undefined") {
-    const data = window.localStorage.getItem('userData')
-    if (data) {
-      const json: IUser = JSON.parse(data)
-      if (json.phone) {
-        return 5
-      } else {
-        return 4
-      }
+  const json = getUserData()
+  if (json) {
+    if (json.phone) {
+      return 5
+    } else {
+      return 4
     }
-  } 
-    return 0
+  }
+  return 0
 }
 
 export default function Home() {
@@ -65,8 +70,18 @@ export default function Home() {
   const onNextStep = () => {
     setStep(prev => prev + 1)
   }
+ 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const json = getUserData()
+      if (json) {
+        setuserData(json)
+        setStep(nextStep())
+      }
+    }
+  }, [])
 
-  useEffect(()=> {
+  useEffect(() => {
     window.localStorage.setItem('userData', userData && JSON.stringify(userData))
   }, [userData])
 
@@ -76,4 +91,3 @@ export default function Home() {
     </MainContext.Provider>
   );
 }
-

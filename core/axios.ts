@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 const Axios = axios.create({
     baseURL: "http://localhost:3001",
     headers: {
-        Authorizaion: 'Basic' + Cookies.get('token')
+        Authorization: 'Bearer ' + Cookies.get('token')
     }
 })
 
