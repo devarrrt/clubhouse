@@ -34,10 +34,13 @@ class AuthController {
         await Code.destroy({
           where: whereQuery,
         });
-        await User.update({ isActive: true }, { where: { id: userId }})
+        await User.update({ isActive: 1 }, { where: { id: userId }})
         return res.send();
-      } else {
-        throw new Error('Пользователь не найден');
+      } else { 
+         res.status(400).json({
+          message: "Код не найден",
+          // error: JSON.stringify(error),
+           });
       }
     } catch (error) {
       res.status(500).json({

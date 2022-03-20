@@ -59,10 +59,6 @@ const EnterCodeStep = () => {
                                 />
                             ))}
                         </div>
-                        {/* <Button onClick={onSubmit} disabled={disabled}>
-                            Next
-                            <img className="d-ib ml-10" src="/static/arrow.svg" />
-                        </Button> */}
                     </WhiteBlock>
                 </>
             ) : <div className="text-center">

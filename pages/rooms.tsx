@@ -3,12 +3,20 @@ import Button from '../components/Button'
 import ConversationCard from '../components/ConversationCard'
 import Header from '../components/Header'
 import Link from 'next/link';
+import Head from 'next/head';
 import Axios from '../core/axios';
+import { UserApi } from './../API/UserApi';
+import Cookies from 'nookies';
+import { checkAuth } from './../helpersFront';
 
 const RoomsPage = ({rooms = []}) => {
 
   return (
     <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Clubhouse: Drop-in audio chat</title>
+      </Head>
       <Header />
       <div className="container">
         <div className="mt-40 d-flex align-items-center justify-content-between">
@@ -36,19 +44,34 @@ const RoomsPage = ({rooms = []}) => {
   )
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
   try {
-    const {data} = await Axios.get('/rooms.json')
+    const user =  await checkAuth(ctx)
+    console.log(user,'THIS ');
+
+    if (!user){
+      return {
+        props: {},
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      }
+    }
+
     return {
       props: {
-        rooms: data
+        user,
+        rooms: []
       }
     }
   } catch(e) {
     console.log(e)
   }
   return {
-    props: []
+    props: {
+      rooms: []
+    }
   }
 
 }

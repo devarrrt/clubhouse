@@ -5,6 +5,7 @@ import GitHubStep from './../components/steps/GitHubStep/index';
 import ChooseAvatarStep from './../components/steps/ChooseAvatarStep/index';
 import EnterPhoneStep from './../components/steps/EnterPhoneStep/index';
 import EnterCodeStep from '../components/steps/EnterCodeStep';
+import { checkAuth } from './../helpersFront';
 
 const StepsState = {
   0: WeclomeStep,
@@ -39,7 +40,7 @@ const getUserData = (): IUser | null => {
   try {
     return JSON.parse(window.localStorage.getItem('userData'))
   } catch (error) {
-    return  
+    return
   }
 }
 
@@ -70,7 +71,7 @@ export default function Home() {
   const onNextStep = () => {
     setStep(prev => prev + 1)
   }
- 
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const json = getUserData()
@@ -90,4 +91,22 @@ export default function Home() {
       <Step />
     </MainContext.Provider>
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  try {
+    const user = await checkAuth(ctx)
+
+    if (user) {
+      return {
+        props: {},
+        redirect: {
+          destination: '/rooms',
+          permanent: false
+        }
+      }
+    }
+  } catch (e) { }
+
+  return {props: {}}
 }

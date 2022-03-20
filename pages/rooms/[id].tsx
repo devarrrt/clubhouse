@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Header from '../../components/Header/index';
 import BackButton from '../../components/BackButton';
 import Room from '../../components/Room';
-import Axios from '../../core/axios';
+import Axios, { instance } from '../../core/axios';
 
 type IRoomPage = {
 
@@ -25,7 +25,7 @@ export default RoomPage
 
 export const getServerSideProps = async (context) => {
     try {
-        const { data } = await Axios.get('/rooms.json')
+        const { data } = await instance.get('/rooms.json')
         const roomId = context.query.id
         const room = data.find(el => el.id === roomId)
         return {
